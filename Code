@@ -1,0 +1,46 @@
+
+Sub EnvioCorreo()
+    
+'ENVIO DE CORREO
+
+    Dim miadj As Outlook.Attachments
+    On Error Resume Next
+    Set OutApp = GetObject("", "Outlook.Application")
+    Err.Clear
+    If OutApp Is Nothing Then Set OutApp = CreateObject("Outlook.Application")
+    OutApp.Visible = True
+    Set Correo = OutApp.CreateItem(0)
+    mssg = "Estimad@," & vbNewLine & _
+    vbNewLine & _
+    "Tu apoyo para enviar los SMS de los dos Excel adjuntos" & vbNewLine & _
+    vbNewLine & _
+    "Atentamente," & vbNewLine & _
+    vbNewLine & _
+    "Pietro Alejandro Vasquez Cervantes" & vbNewLine & _
+    "Practicante Profesional Pignoraticio." & vbNewLine
+
+    With Correo
+    .Display
+    End With
+    signature = Correo.Body
+    Set miadj = Correo.Attachments
+
+    With Correo
+    .To = "correo@correoempresarial.com.pe"
+    .CC = "correo@correoempresarial.com.pe"
+    .Subject = "SMS Vencidos " & Format(Now, "ddmmyyyy")
+    .Body = mssg
+    
+    'Archivo Vencidos
+    .Attachments.Add "\\192.168.1.20\Unidades\Carpeta\Pignoraticio\5. SMS\1. SMS Vencidos Actualizado\Historial Vencidos\" & Format(Now, "yyyy") & "\" & Format(Now, "mm") & ". " & Format(Now, "mmmm") & "\SMS_Vencidos_" & Format(Now, "ddmmyyyy") & ".xlsx"
+    'Archivo Vence Hoy
+    .Attachments.Add "\\192.168.1.20\Unidades\Carpeta\Pignoraticio\5. SMS\1. SMS Vencidos Actualizado\Historial Vence Hoy\" & Format(Now, "yyyy") & "\" & Format(Now, "mm") & ". " & Format(Now, "mmmm") & "\SMS_Vencidos_" & Format(Now, "ddmmyyyy") & "_Vence Hoy.xlsx"
+    'Archivo Vence Mañana
+    .Attachments.Add "\\192.168.1.20\Unidades\Carpeta\Pignoraticio\5. SMS\1. SMS Vencidos Actualizado\Historial Vence Mañana\" & Format(Now, "yyyy") & "\" & Format(Now, "mm") & ". " & Format(Now, "mmmm") & "\SMS_Vencidos_" & Format(Now, "ddmmyyyy") & "_Vence Mañana.xlsx"
+    
+    .Display
+    .Send
+End With
+
+
+End Sub
